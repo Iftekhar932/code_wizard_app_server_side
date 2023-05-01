@@ -18,23 +18,13 @@ app.get("/courses", (req, res) => {
 // this one is working but i want to learn how to do it with query instead of params
 app.get("/courses/:category", (req, res) => {
   const categoryName = req.params.category;
-  console.log("🚀 ~ file: index.js:21 ~ app.get ~ categoryName:", categoryName);
   const filteredCourses = courseData.filter((c) => c.category == categoryName);
-  console.log(
-    "🚀 ~ file: index.js:23 ~ app.get ~ filteredCourses:",
-    filteredCourses
-  );
   res.send(filteredCourses);
 });
 
 /* app.get("/courses/:category", (req, res) => {
   const categoryName = req.query.category;
-  console.log("🚀 ~ file: index.js:27 ~ app.get ~ categoryName:", categoryName);
   const filteredCourses = courseData.filter((c) => c.category == categoryName);
-  console.log(
-    "🚀 ~ file: index.js:29 ~ app.get ~ filteredCourses:",
-    filteredCourses
-  );
   res.send(filteredCourses);
 });
  */
