@@ -28,6 +28,16 @@ app.get("/courses/:category", (req, res) => {
   res.send(filteredCourses);
 });
  */
+
+app.get("/courses/:id", (req, res) => {
+  const courseId = req.params;
+  console.log("🚀 ~ file: index.js:34 ~ app.get ~ courseId:", courseId);
+
+  /* const filteredCourses = courseData.filter((c) => c.id == courseId);
+  res.send(filteredCourses); */
+  res.send();
+});
+
 app.listen(port, () => {
   console.log("listening on port " + port);
 });
