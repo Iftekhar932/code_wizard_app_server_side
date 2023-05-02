@@ -29,13 +29,11 @@ app.get("/courses/:category", (req, res) => {
 });
  */
 
-app.get("/courses/:id", (req, res) => {
-  const courseId = req.params;
-  console.log("🚀 ~ file: index.js:34 ~ app.get ~ courseId:", courseId);
-
-  /* const filteredCourses = courseData.filter((c) => c.id == courseId);
-  res.send(filteredCourses); */
-  res.send();
+// this one sends details of an individual course from course data
+app.get("/courseDetail/:id", (req, res) => {
+  const courseId = req.params.id;
+  const courseDetails = courseData.find((c) => c.id == courseId);
+  res.send(courseDetails);
 });
 
 app.listen(port, () => {
