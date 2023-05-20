@@ -61,6 +61,7 @@ async function run() {
       // console.log("line61 back", users);
       res.send(users);
     });
+
     app.get("/getUser/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
@@ -74,6 +75,7 @@ async function run() {
       const result = await userCollection.deleteMany(query);
       console.log("back 75", result);
     }); */
+
     app.delete("/deleteUser/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
@@ -81,6 +83,7 @@ async function run() {
       console.log("back 81", result);
       res.send(result);
     });
+
     app.post("/postUser", async (req, res) => {
       const user = req.body;
       const result = await userCollection.insertOne(user);
@@ -88,13 +91,26 @@ async function run() {
       console.log("89 back", user, result);
       res.send(result);
     });
-    app.put("/updateUser/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: ObjectId(id) };
-      const result = await userCollection.updateOne(query);
-      console.log(result);
-      res.send(result);
-    });
+
+    try {
+      app.put("/getUser/:id", async (req, res) => {
+        const id = req.params.id;
+        const filter = { _id: ObjectId(id) };
+        // const options = { upsert: true };
+        const updateDoc = req.body;
+        console.log("back 100", updateDoc);
+        const result = await userCollection.updateOne(
+          filter,
+          updateDoc
+          // options
+        );
+
+        console.log("line 99 back", result, req.body);
+        res.send(result);
+      });
+    } catch (error) {
+      console.log(error, "line 98 back");
+    }
   } catch (err) {
     console.log(err);
   } finally {
