@@ -48,6 +48,7 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
 });
+
 async function run() {
   try {
     await client.connect();
@@ -65,10 +66,9 @@ async function run() {
     app.get("/users/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
-      const cursor = userCollection.find(query);
-      const result = await cursor.toArray();
-      console.log("69 back", result);
-      res.send(result);
+      const cursor = await userCollection.findOne(query);
+      console.log("70 back", cursor);
+      res.send(cursor);
     });
 
     app.post("/users", async (req, res) => {
@@ -77,11 +77,27 @@ async function run() {
       console.log("77 back", cursor);
       res.send(cursor);
     });
-    app.delete("/deleteUsers", async (req, res) => {
+
+    app.delete("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await userCollection.deleteOne(query);
+      console.log("line 85", result);
+      res.send(result);
+    });
+
+    app.delete("/users", async (req, res) => {
       const query = {};
-      const cursor = await userCollection.deleteOne(query);
-      console.log("line 81", cursor);
-      res.send(cursor);
+      const result = await userCollection.deleteMany(query);
+      console.log("line 92", result);
+      res.send(result);
+    });
+
+    app.put("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await userCollection.findOne(query);
+      res.send(result);
     });
   } catch (err) {
     console.log(err);
