@@ -7,6 +7,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 // JSON DATA
 const courseData = require("./data/data.json");
 
+// middleWares
 app.use(cors());
 app.use(express.json());
 
