@@ -1,15 +1,15 @@
 const express = require("express");
-const cors = require("cors");
-const connectDB = require("./database/mongooseDB.js");
-const port = process.env.PORT || 5000;
-
 const app = express();
-require("dotenv").config();
-app.use(cors());
+const cors = require("cors");
 
+const port = process.env.PORT || 5000;
+// mongoose function import
+const connectDB = require("./database/mongooseDB.js");
 connectDB();
 
-app.use("/", require("./routes/api/products.js"));
+app.use(cors());
+app.use("/", require("./routes/api/allProducts.js"));
+app.use("/", require("./routes/api/singleProduct.js"));
 
 app.listen(port, () => {
   console.log(`RUNNING ON PORT 👉👉 ${port}`);
