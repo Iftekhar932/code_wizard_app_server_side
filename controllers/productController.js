@@ -2,12 +2,20 @@
 const { ObjectId } = require("mongodb");
 const product = require("../model/product.js");
 
+// ! ways u can implement to use query, look for it
 const productController = async (req, res) => {
-  const id = req.params.id;
+  const id = req?.params?.id;
+  const query = req?.query;
+  console.log(req.params, req.query);
+
+  if (id)
+    if (!id || !ObjectId.isValid(id)) {
+      return;
+    }
 
   try {
-    // if id available then used
-    const products = id
+    // if id available then used otherwise all products will be sent
+    let products = id
       ? await product.find({
           _id: ObjectId(id),
         })

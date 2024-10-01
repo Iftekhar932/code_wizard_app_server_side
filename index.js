@@ -9,7 +9,8 @@ connectDB();
 
 app.use(cors());
 app.use("/", require("./routes/api/allProducts.js"));
-app.use("/", require("./routes/api/singleProduct.js"));
+app.use("/", require("./routes/api/singleProductById.js")); //using id
+app.use("/", require("./routes/api/singleProductByCategory.js")); //using id
 
 app.listen(port, () => {
   console.log(`RUNNING ON PORT 👉👉 ${port}`);
