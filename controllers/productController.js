@@ -5,26 +5,38 @@ const product = require("../model/product.js");
 // ! ways u can implement to use query, look for it
 const productController = async (req, res) => {
   const id = req?.params?.id;
-  const query = req?.query;
-  console.log(req.params, req.query);
+  const searchQuery = req?.query?.searchQuery;
+  console.log(id, searchQuery);
 
-  if (id)
-    if (!id || !ObjectId.isValid(id)) {
-      return;
-    }
+  // checking with mongoose ObjectId method if the id pattern is valid
 
   try {
-    // if id available then used otherwise all products will be sent
-    let products = id
-      ? await product.find({
-          _id: ObjectId(id),
-        })
-      : await product.find();
+    let resultProducts;
 
-    // if products available then send with in response otherwise error message
-    products
-      ? res.status(200).send(products)
-      : res.status(404).send({ error: "No products found" });
+    if (ObjectId.isValid(id)) {
+      resultProducts = await product.find({
+        _id: ObjectId(id),
+      });
+      resultProducts
+        ? res.status(200).send(resultProducts)
+        : res.status(404).send({ error: "No products found" });
+    } else if (searchQuery) {
+      // ! incomplete query search feature, just querying the title, but i need it to query description also
+      resultProducts = await product.find({ $text: { $search: searchQuery } });
+      resultProducts
+        ? res.status(200).send(resultProducts)
+        : res.status(404).send({ error: "No products found" });
+    } else {
+      resultProducts = await product.find();
+      res.status(200).send(resultProducts);
+    }
+
+    // if resultProducts is not empty then send otherwise 404
+    /* 
+    resultProducts
+      ? res.status(200).send(resultProducts)
+      : res.status(404).send({ error: "No products found" }); 
+      */
   } catch (error) {
     console.error("Error retrieving products:", error);
     return res.status(500).send({ error: "Internal server error" });
